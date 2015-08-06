@@ -9,7 +9,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <signal.h>
-#include "ChatServer.h"
+#include "MCSserver_interface.h"
 #include "chatlib.h"
 
 
