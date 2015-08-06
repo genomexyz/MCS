@@ -115,9 +115,7 @@ static void remove_from_list (GtkWidget *list, char *name)
 	gtk_tree_model_get_iter_first(model, &iter);
 	
 	do {
-		printf("debugging remove list\n");
 		gtk_tree_model_get(model, &iter, 0, &citer, -1);
-		printf("kalimatnya adalah : %s\n", citer);
 		if (!strcmp((char*) citer, name)) {
 			gtk_list_store_remove(store, &iter);
 			break;
@@ -165,30 +163,23 @@ void* recv_message (void *args)
 	char nick [8];
 	char ChatText [120];
 	
-	printf("mendapat kiriman : recv_message bekerja\n");
 	while (1) {
 		memset(packet_rec, 0, sizeof packet_rec);
 		memset(packet, 0, sizeof packet);
 		memset(nick, 0, sizeof nick);
 		terima(arg->sock, &pack, sizeof (struct packet_info));
-		printf("jumlah paketnya adalah : %d\n", pack.size);
-		printf("memasuki infiniti loop recv_message\n");
 		if (pack.type == CHAT_PACKET) {
-			printf("chat packet inf\n");
 			terima(arg->sock, packet_rec, pack.size);
 			nick_from_packet(packet_rec, nick, ChatText);
 			memset(packet, 0, sizeof packet);
 			sprintf(packet, "<%s> : %s\n", nick, ChatText);
 			append_chat(arg->view, packet);
 		} else if (pack.type == MEMQUIT_PACKET) {
-			printf("quit user inf\n");
 			terima(arg->sock, nick, sizeof nick);
 			remove_from_list(arg->list, nick);
 			sprintf(packet, "the %s has been quited, reason : reset by peer\n", nick);
 			append_chat(arg->view, packet);
-			printf("selesai remove 1 member\n");
 		} else if (pack.type == MEMJOIN_PACKET) {
-			printf("join user inf\n");
 			terima(arg->sock, nick, pack.size);
 			if (strcmp(arg->nick, nick)) {
 				add_to_list(arg->list, nick);
@@ -197,7 +188,6 @@ void* recv_message (void *args)
 			}
 		}
 	}
-	printf("keluar loop recv_message\n");
 }
 
 static void init_list (GtkWidget *list)
