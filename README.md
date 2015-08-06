@@ -14,3 +14,6 @@ Things that need to note in MCS client, when client finish join server now clien
 client will obtain 'packet info' first and then at second, client will obtain real packet
 
 'packet info' contain type of real packet and the size
+
+note :
+download gtk 3 lib first, to compile client
